@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+<body>
+  <div class="panel panel-default" style=" box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.3s;">
+    <div class="panel-body">
+     
+      <div class="col-sm-4">
+        <div class="form-group">
+          <div class="col-sm-2">
+            <label class="control-label">Search</label>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="text">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3  pull-right">
+        <input type="hidden" name="ss" value="true">
+            <div class="form-group"  align="right">
+              <button id="search" type="button" class="btn btn-sm btn-info searchbtn" onclick="">
+                  Search
+              </button>
+              
+              <button id="addButton" class="btn btn-sm btn-success"	data-toggle="modal" data-target="#myModal">Add New</button>
+  
+              <button data-toggle="download" class="btn btn-sm btn-primary" align="right" onclick=""	>
+                Download              
+              </button>
+            
+            </div>
+        </div>
+
+
+    
+    </div>
+    
+  </div>
+  
+  <div class="span12 freeze-table" style="width: 100%; overflow-x: auto; overflow-y: auto;">
+
+    <table id="list" class="ListTable table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>Name</th>
+          <th>STB No.</th>
+          <th>From Date</th>
+          <th> To Date</th>
+          <th>Renew</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Maria Anders</td>
+          <td>10101010101010</td>
+          <td id="fromDate"> -- </td>
+          <td id="toDate"> -- </td>
+          <td>
+            <button type="button" class="btn btn-xs btn-link" onclick="myFunction()"><strong>ReNew - Pack</strong></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add New Client Details</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Client Name :</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+          <br>
+            <label for="sbt">Setup Box Number :</label>
+            <input type="text" class="form-control" id="sbt" placeholder="Enter Setup Box Number" name="sbt">
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button id="save" type="submit" class="btn btn-success" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  </div>
+<script type="text/javascript">
+
+var db=openDatabase("cable","1.0","cable",89456);
+$(function(){
+
+//Insert
+
+$("save").click(function(){
+var cname=$("#name").val();
+var sbtn=$("#sbt").val();
+db.transaction(function(transaction){
+  var sql="INSERT INTO client_list(name,stb) VALUES(?,?)";
+  transaction.executeSql(sql,[cname,sbtn],function(){
+    alert("Record added successfully");
+  },function(){
+    alert("Record addition failed");
+  });
+
+});
+
+
+});
+
+
+
+})
+
+
+
+function myFunction() {
+ 
+  var now = new Date()
+
+  document.getElementById("fromDate").innerHTML = (now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear());
+
+  var next30days = new Date(now.setDate(now.getDate() + 30))
+
+  document.getElementById("toDate").innerHTML = (next30days.getDate() + "/" + (next30days.getMonth() + 1) + "/" + next30days.getFullYear());
+}
+
+
+
+</script>
+
+</body>
+</html>
